@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.joeqiang.tmall.mapper.ProductMapper">
+    <select id="getProduct" resultType="Product">
+          SELECT  * FROM product WHERE id=#{pid}
+      </select>
+    <select id="getCategorybyId" resultType="Category">
+        SELECT * from category WHERE id =#{cid}
+    </select>
+    <select id="getProductImageById" resultType="Integer">
+        SELECT MIN(p.id) FROM productimage p WHERE pid=#{pid}
+    </select>
+    <select id="getProductSaleCount" resultType="Integer">
+        select number FROM orderitem WHERE pid =#{pid}
+    </select>
+    <select id="getProductReviewById" resultType="Integer">
+        select count(*) FROM review WHERE pid =#{pid}
+    </select>
+    <select id="productSingleImages" resultType="Productimage">
+        SELECT * FROM  productimage WHERE  pid=#{pid} AND type="type_single"
+    </select>
+    <select id="getReviewcontent" resultType="Review">
+        SELECT  * FROM  review where pid =#{pid}
+    </select>
+    <select id="productParamterList" resultType="Propertyvalue">
+     SELECT p.name,pv.*  FROM propertyvalue pv JOIN property p ON pid =#{pid} AND pv.ptid=p.id
+    </select>
+    <select id="productParamterName" resultType="Property">
+       SELECT p.name FROM property p WHERE  id =#{ptid}
+    </select>
+
+    <select id="productDetailImages" resultType="Productimage">
+        SELECT * FROM  productimage WHERE  pid=#{pid} AND type="type_detail"
+    </select>
+    <select id="buyOne" resultType="Product">
+        SELECT * from product where id =#{pid}
+    </select>
+    <select id="getImage" resultType="Integer">
+        SELECT MIN(p.id) FROM productimage p where pid=#{pid} AND type="type_single"
+    </select>
+    <select id="getOrderitem" resultType="Orderltem">
+        SELECT  * FROM  orderitem where uid=#{uid} ORDER BY id DESC
+</select>
+    <select id="update" resultType="Integer">
+        update orderitem SET number=#{num} where pid=#{pid}
+    </select>
+    <insert id="add" parameterType="Orderltem">
+        INSERT INTO orderitem (pid,uid,number)VALUES (#{pid},#{uid},#{num})
+    </insert>
+   <select id="getPid" resultType="Integer" >
+       SELECT pid from orderitem where id =#{oid}
+   </select>
+    <select id="getUid" resultType="Integer">
+        SELECT id from user where name=#{name} AND password=#{password}
+    </select>
+</mapper>

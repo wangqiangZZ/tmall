@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.joeqiang.tmall.mapper.OrderMapper">
+    <select id="total" resultType="int">
+        select count(*) from order_
+    </select>
+    <select id="paging" resultType="Order">
+        select * from order_ order by id
+        <if test="startIndex!=null and count!=null">
+            limit #{startIndex},#{count}
+        </if>
+    </select>
+    <select id="getOrderList" resultType="Order">
+        SELECT * FROM order_ WHERE uid=#{uid} order by id DESC
+    </select>
+    <select id="getUserName" resultType="User">
+        SELECT name from user WHERE  id=#{uid}
+    </select>
+
+
+    <select id="getOrderltem" resultType="Orderltem">
+        SELECT * FROM orderitem WHERE uid=#{uid}
+    </select>
+
+    <select id="getProductList" resultType="Product">
+    SELECT P.id,P.name,p.promotePrice,p.cid,o.number FROM product p JOIN orderitem o
+    ON O.pid=P.id WHERE o.uid =#{uid}
+    </select>
+
+    <select id="getProductImg" resultType="Productimage">
+        SELECT min(p.id) from productimage p WHERE pid=#{pid}
+    </select>
+    <select id="getProductNum" resultType="Integer">
+       SELECT number FROM orderitem WHERE pid=#{pid} AND uid=#{uid}
+   </select>
+    <select id="getPromotePrice" resultType="float">
+    SELECT promotePrice FROM product where id=#{pid}
+    </select>
+    <select id="update" resultType="Integer">
+ update order_ SET deliveryDate =#{newTime},status=#{status} WHERE id =#{id};
+    </select>
+
+    <select id="getUserOrderltem" resultType="Orderltem">
+        SELECT * FROM orderitem where uid=#{uid}
+    </select>
+    <insert id="insetOrder" parameterType="String">
+     insert into order_ (orderCode,address,post,receiver,mobile,userMessage,createDate,uid,status,pid) VALUES(#{orderCode},#{address},
+     #{post},#{receiver},#{mobile},#{userMessage},#{createDate},#{uid},#{status},#{pid})
+    </insert>
+    <select id="orderId" resultType="Integer">
+        SELECT id from order_ WHERE orderCode=#{orderCode}
+    </select>
+    <select id="getOrder" resultType="Order">
+        SELECT address,receiver,mobile FROM order_ WHERE id =#{oid}
+    </select>
+    <select id="updateOrder" resultType="Integer">
+    update order_ SET status =#{status} WHERE id=#{oid}
+    </select>
+    <select id="updateOrderitem" resultType="Integer">
+        update orderitem SET oid =#{oid} WHERE pid=#{pid}
+    </select>
+    <select id="getProductByoid" resultType="Product">
+SELECT * from product WHERE id IN(
+            SELECT pid from orderitem WHERE oid =#{oid})
+    </select>
+
+    <delete id="deleteOrderItem" parameterType="Integer">
+        DELETE from orderitem WHERE oid=#{oiid}
+    </delete>
+    <delete id="deleteOrder" parameterType="Integer">
+        DELETE FROM  order_ WHERE id=#{oiid}
+    </delete>
+    <select id="getProductTotal" resultType="double">
+
+	select promotePrice FROM product WHERE id IN(
+		 SELECT pid FROM orderitem WHERE oid=#{id})
+
+    </select>
+    <select id="getNum" resultType="Integer">
+        SELECT number from orderitem WHERE oid=#{id} AND uid =#{userId}
+    </select>
+</mapper>

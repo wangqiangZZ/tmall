@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.joeqiang.tmall.mapper.HomePageMapper">
+    <select id="get" resultType="Category">
+   SELECT  * FROM category
+ </select>
+    <select id="getProduct" resultType="Product">
+        SELECT * from product WHERE  cid =#{cid}
+    </select>
+    <select id="productImage" resultType="Integer">
+         SELECT MAX(p.id) FROM productimage p WHERE pid=#{pid} AND type="type_single"
+    </select>
+    <!--模糊查询-->
+    <select id="search" resultType="Product">
+        SELECT * FROM product p WHERE
+                     p.name like CONCAT('%',#{keyword},'%')
+    </select>
+    <select id="getImageByPid" resultType="Integer">
+      SELECT MAX(p.id) FROM productimage p WHERE pid=#{pid} and type="type_single"
+    </select>
+    <select id="productSaleCount" resultType="Integer">
+        select number from orderitem WHERE pid=#{pid};
+    </select>
+</mapper>
