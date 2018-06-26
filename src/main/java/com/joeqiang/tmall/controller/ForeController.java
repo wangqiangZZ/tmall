@@ -301,6 +301,24 @@ public class ForeController {
     }
 
     /**
+     * 订单删除功能
+     */
+    @RequestMapping("foredeleteOrder")
+    @ResponseBody
+    public String deleteOrder(int oid) {
+        System.out.println("订单号:" + oid);
+        int oiid =oid;
+         Integer a =orderService.deleteOrderItem(oiid);
+        Integer b = orderService.deleteOrder_(oiid);
+        if (a > 0 & b > 0) {
+            return "success";
+        }
+
+        return "fail";
+    }
+
+
+    /**
      * 结算功能
      *
      * @param oiid
