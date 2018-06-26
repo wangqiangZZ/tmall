@@ -269,7 +269,7 @@
 
                     </td>
                     <td>
-                        <a class="deleteOrderItem" oiid="${oi.id}"  href="#nowhere">删除</a>
+                        <a class="deleteOrderItem" oiid="${oi.id}"  href="#">删除</a>
                     </td>
                 </tr>
             </c:forEach>
